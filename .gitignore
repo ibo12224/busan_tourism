@@ -1,4 +1,5 @@
 *.jpg
 *.png
-*.csv
 **/secret/
+.env
+임용수/*/*.csv
