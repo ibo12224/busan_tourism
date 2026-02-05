@@ -5,13 +5,10 @@ import os
 
 # 1. 페이지 설정
 st.set_page_config(layout="wide", page_title="Busan Tourism Analysis")
-
-
-# 파일 경로 정의
-file_path = "부산_관광지명.xlsx"
-file_path_functional = "기능유사도.xlsx"
-file_path_functional2 = "감상유사도.xlsx" # 감성 파일 경로
+file_path = "data/부산_관광지명.xlsx"
 file_path_similarity = "data/유사도.xlsx" 
+file_path_functional = "data/기능유사도.xlsx"
+file_path_functional2 = "data/감상유사도.xlsx" # 감성 파일 경로
 
 # 2. CSS: 버튼 미니멀라이즈 및 여백 최적화
 st.markdown("""
@@ -85,6 +82,7 @@ st.markdown("""
 # 3. 데이터 로드
 @st.cache_data
 def load_data():
+    
     try:
         df = pd.read_excel(file_path)
         df.columns = [col.strip() for col in df.columns]
@@ -232,6 +230,8 @@ if st.session_state.get('selected_gu'):
                 st.markdown(f"### **{selected_spot}** 감성/기능 분석 결과")
                 
                 # 파일 경로 정의
+                
+                
                 
                 # 3개의 컬럼 레이아웃으로 분할
                 col_review, col_function, col_emotion_list = st.columns(3, gap="medium") 
