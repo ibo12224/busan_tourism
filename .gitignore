@@ -1,4 +1,6 @@
-*.jpg
+**/image/
+권이현/**.jpg
+천동현/**.jpg
 *.png
 **/secret/
 .env

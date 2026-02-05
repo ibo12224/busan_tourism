@@ -13,11 +13,13 @@ RUN apt-get update && apt-get install -y \
 # 4. 의존성 파일 복사 및 설치
 COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN mkdir -p /app/images
 
 # 5. 소스 코드 및 데이터 복사
 # 이후 코드에서 pd.read_csv("data/your_file.csv")로 접근 가능
 COPY app/ ./
 COPY data/ ./data/
+COPY images/ /app/images/
 
 # 6. Streamlit 포트 개방
 EXPOSE 8501
