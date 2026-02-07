@@ -55,5 +55,5 @@ jobs:
               -p 8501:8501 \
               -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest \
-              streamlit run your_app_name.py --server.port 8501 --server.address 0.0.0.0
+              streamlit run main.py --server.port 8501 --server.address 0.0.0.0
             
