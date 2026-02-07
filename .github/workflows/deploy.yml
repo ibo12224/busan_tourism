@@ -46,7 +46,7 @@ jobs:
             
             # 2. 기존 컨테이너 중지 및 삭제
             sudo docker stop busan-tourism || true
-            sudo docker rm busan-tourism || true
+            sudo docker rm -f busan-tourism || true
             
             # 3. 새 컨테이너 실행
             # --restart always 옵션을 추가해 서버 재부팅 시 자동 실행되게 함
