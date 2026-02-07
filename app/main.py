@@ -13,7 +13,8 @@ from dotenv import load_dotenv
 # =============================================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-load_dotenv() # .env 파일 로드
+dotenv_path = os.path.join(BASE_DIR, ".env")
+load_dotenv(dotenv_path) # 정확한 위치의 .env 로드
 api_key = os.getenv("OPENAI_API_KEY")
 
 FILE_CONFIG = {
