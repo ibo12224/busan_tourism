@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ] # 본인의 브랜치명(main 또는 master) 확인!
+    branches: [ "main" ]
 
 jobs:
   build-and-push:
@@ -22,11 +22,9 @@ jobs:
         with:
           context: .
           push: true
-          # 본인의 [도커허브ID]/[이미지명]으로 수정하세요!
-          tags: ibo12224/busan-tourist-rag:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest
 
-  # (선택 사항) 여기에 EC2에 접속해서 자동으로 docker-compose pull을 실행하는 단계를 추가할 수 있습니다.
-deploy:
+  deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
@@ -44,13 +42,13 @@ deploy:
             sudo docker stop busan-tourism || true
             sudo docker rm -f busan-tourism || true
 
-            # 3. 안 쓰는 이미지 정리 (용량 확보)
+            # 3. 안 쓰는 이미지 정리
             sudo docker image prune -f
 
-            # 4. 네트워크가 없으면 생성
+            # 4. 네트워크 확인 및 생성
             sudo docker network inspect busan-net >/dev/null 2>&1 || sudo docker network create busan-net
 
-            # 5. 컨테이너 새로 실행
+            # 5. 컨테이너 실행
             sudo docker run -d --name busan-tourism \
               --network busan-net \
               -p 8501:8501 \
