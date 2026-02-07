@@ -100,8 +100,8 @@ st.markdown("""
 @st.cache_data
 def load_data_smart(file_path):
     # 1. 입력값 및 파일 존재 확인
-    if not file_path:
-        return pd.DataFrame()
+    if not os.path.exists(file_path):
+        print(f"🚨 [FILE NOT FOUND] 경로를 찾을 수 없습니다: {file_path}")
     
     # 2. 파일이 존재하는지 먼저 확인
     if not os.path.exists(file_path):
