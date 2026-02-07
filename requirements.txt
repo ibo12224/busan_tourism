@@ -4,3 +4,4 @@ langchain-openai
 pandas
 openpyxl
 plotly
+python-dotenv
