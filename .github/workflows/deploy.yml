@@ -38,9 +38,17 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
+            # 1. 최신 이미지 가져오기
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest
+
+            # 2. 기존 컨테이너 중지 및 삭제 (실행 중이지 않아도 오류 방지를 위해 || true 사용)
             sudo docker stop busan-tourism || true
             sudo docker rm -f busan-tourism || true
+
+            # 3. 사용하지 않는 이미지 정리 (선택 사항: 디스크 용량 관리)
+            sudo docker image prune -f
+
+            # 4. 컨테이너 새로 실행
             sudo docker run -d --name busan-tourism \
               --network busan-net \
               -p 8501:8501 \
