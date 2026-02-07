@@ -771,7 +771,7 @@ else:
                                     
                                     # [수정] 'name' 키 추가 (오류 해결) 및 데이터 중심 정보 구성
                                     data_info = {
-                                        'name': spot_name,
+                                        'name': top1['name'],
                                         'target_name': top1['name'],
                                         'current_score': f"{top1['score']:.4f}",
                                         'average_benchmark': f"{avg_top1_score:.4f}", 
