@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 # =============================================================================
 # [설정] 파일명 매핑
 # =============================================================================
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 load_dotenv() # .env 파일 로드
 api_key = os.getenv("OPENAI_API_KEY")
