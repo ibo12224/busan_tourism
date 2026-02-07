@@ -533,8 +533,8 @@ if not st.session_state['selected_spot']:
     with col_text:
         st.markdown("""
         <div style="text-align: left; margin-left: 0px;">
-            <div style="font-family:'Pretendard'; font-size:100px; font-weight:900; line-height:0.85; letter-spacing:-4px; color:#000;">SLA</div>
-            <div style="font-family:'Pretendard'; font-size:100px; font-weight:900; line-height:0.85; letter-spacing:-4px; color:#000;">PROJECT</div>
+            <div style="font-family:'Pretendard'; font-size:90px; font-weight:900; line-height:0.85; letter-spacing:-4px; color:#000;">SLA</div>
+            <div style="font-family:'Pretendard'; font-size:90px; font-weight:900; line-height:0.85; letter-spacing:-4px; color:#000;">PROJECT</div>
             <div style="font-family:'Pretendard'; font-size:18px; font-weight:400; color:#666; margin-top:30px; letter-spacing:12px; margin-left:8px;">SPOT - LINEAR - AREA</div>
             <div style="margin-top:50px; border-left:4px solid black; padding-left:20px; color:#444;">
                 <b>Sustainable Location Analysis</b><br>
