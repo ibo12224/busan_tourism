@@ -13,10 +13,11 @@ from dotenv import load_dotenv
 # =============================================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-dotenv_path = os.path.join(BASE_DIR, ".env")
-load_dotenv(dotenv_path) # 정확한 위치의 .env 로드
+# dotenv_path = os.path.join(BASE_DIR, ".env")
+# load_dotenv(dotenv_path)
 api_key = os.getenv("OPENAI_API_KEY")
-
+if not api_key:
+    st.error("API Key를 찾을 수 없습니다. 설정 확인이 필요합니다.")
 FILE_CONFIG = {
     "MAIN_DATA": os.path.join(BASE_DIR, "data", "관광지_혼잡도_찐최종결과물.csv"),
     "PRED_DATA": os.path.join(BASE_DIR, "data", "AI_예측_결과.csv"),
