@@ -1002,7 +1002,22 @@ else:
                     
                     filtered = candidates[candidates.apply(check_all_pass, axis=1)]
                     
-                    st.session_state['cross_result'] = filtered.sort_values(by='FINAL_SCORE', ascending=False)
+                
+                    # --- [수정 구간 시작] ---
+                    if filtered is not None and not filtered.empty:
+                        if 'FINAL_SCORE' in filtered.columns:
+                            # 정상적으로 정렬하여 저장
+                            st.session_state['cross_result'] = filtered.sort_values(by='FINAL_SCORE', ascending=False)
+                        else:
+                            # 컬럼이 없을 경우 (디버깅 모드)
+                            st.error("🚨 'FINAL_SCORE' 컬럼을 찾을 수 없습니다.")
+                            st.info(f"현재 데이터프레임 컬럼: {filtered.columns.tolist()}")
+                            st.session_state['cross_result'] = pd.DataFrame() # 빈 데이터로 초기화하여 다음 에러 방지
+                    else:
+                        # 필터링 결과가 아예 없는 경우
+                        st.warning("⚠️ 조건에 맞는 '다른 카테고리' 관광지가 없습니다.")
+                        st.session_state['cross_result'] = pd.DataFrame()
+                    # --- [수정 구간 끝] ---
                     st.session_state['source_cat'] = source_cat
                     st.session_state['debug_avg'] = (avg_vis, avg_sen, avg_fea)
                 else: st.warning("데이터 부족")
