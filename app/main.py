@@ -97,39 +97,45 @@ st.markdown("""
 # -----------------------------------------------------------------------------
 @st.cache_data
 def load_data_smart(file_path):
-    # 1. 입력값 확인
+    # 1. 입력값 및 파일 존재 확인
     if not file_path:
-        st.error("❌ 호출된 파일 경로가 비어있습니다.")
         return pd.DataFrame()
+    
+    # 2. 파일이 존재하는지 먼저 확인
+    if not os.path.exists(file_path):
+        # 만약 .csv로 요청했는데 파일이 없다면 .xlsx로 바꿔서 한 번 더 확인
+        if file_path.endswith('.csv'):
+            alt_path = file_path.replace('.csv', '.xlsx').strip()
+            if os.path.exists(alt_path):
+                file_path = alt_path
+            else:
+                st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
+                return pd.DataFrame()
+        else:
+            st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
+            return pd.DataFrame()
 
-    # 2. CSV 파일 로드 시도
-    if os.path.exists(file_path):
+    # 3. [개선] 확장자에 따른 로드 로직 분리
+    # 엑셀 파일인 경우
+    if file_path.lower().endswith(('.xlsx', '.xls')):
         try:
+            return pd.read_excel(file_path, engine='openpyxl')
+        except Exception as e:
+            st.error(f"❌ Excel 읽기 실패: {os.path.basename(file_path)} | {e}")
+            return pd.DataFrame()
+            
+    # CSV 파일인 경우
+    else:
+        try:
+            # 시도 1: utf-8-sig (한글 깨짐 방지용)
             return pd.read_csv(file_path, encoding='utf-8-sig')
-        except Exception as e:
+        except Exception:
             try:
+                # 시도 2: cp949 (Windows 저장 파일용)
                 return pd.read_csv(file_path, encoding='cp949')
-            except:
-                st.error(f"❌ CSV 읽기 실패: {file_path}")
-                st.error(f"에러 내용: {e}")
-
-    # 3. CSV가 없을 경우 XLSX 시도 (replace 시 앞뒤 공백 제거 필수)
-    xlsx_path = str(file_path).replace('.csv', '.xlsx').strip()
-    
-    if os.path.exists(xlsx_path):
-        try:
-            # engine='openpyxl'이 설치되어 있어야 합니다.
-            return pd.read_excel(xlsx_path, engine='openpyxl')
-        except Exception as e:
-            st.error(f"❌ XLSX 읽기 실패: {xlsx_path}")
-            st.error(f"에러 내용: {e}")
-
-    # 4. 파일이 물리적으로 없는 경우 (이게 뜰 확률이 가장 높음)
-    # 어떤 경로를 찾으려 했는지 사용자에게 보여줍니다.
-    st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
-    # st.sidebar.write(f"시도한 경로: {file_path}") # 필요시 주석 해제하여 전체 경로 확인
-    
-    return pd.DataFrame()
+            except Exception as e:
+                st.error(f"❌ CSV 읽기 실패: {os.path.basename(file_path)} | {e}")
+                return pd.DataFrame()
 
 @st.cache_data
 def get_category_map():
@@ -605,7 +611,7 @@ else:
                             with st.spinner("🔄 AI 심층분석 중..."):
                                 ranking = get_ranking_info(main_df, spot_name, st.session_state['sel_year'])
                                 summary = y_chart_df.to_string(index=False)
-                                res, color = generate_section_analysis("trend", spot_name, st.session_state['sel_year'], summary, current_stage, ranking)
+                                res, color,*_ = generate_section_analysis("trend", spot_name, st.session_state['sel_year'], summary, current_stage, ranking)
                                 st.session_state['analysis_results']['trend'][cache_key] = (res, color)
                                 st.rerun()
                 else: st.info("해당 연도 데이터 없음")
@@ -639,7 +645,7 @@ else:
                 if st.button("📄 AI 심층 분석 보고서 생성 (Click)", key="btn_hourly", use_container_width=True, type="primary"):
                     with st.spinner("🔄 AI 심층분석 중..."):
                         ranking = get_ranking_info(main_df, spot_name, st.session_state['sel_year'])
-                        res, color = generate_section_analysis("hourly", spot_name, st.session_state['sel_year'], h_df.to_string(), current_stage, ranking)
+                        res, color,*_ = generate_section_analysis("hourly", spot_name, st.session_state['sel_year'], h_df.to_string(), current_stage, ranking)
                         st.session_state['analysis_results']['hourly'][key_h] = (res, color)
                         st.rerun()
         else: st.write("해당 월 데이터 없음")
@@ -665,7 +671,7 @@ else:
                 else:
                     if st.button("📄 AI 심층 분석 보고서 생성 (Click)", key="btn_forecast", use_container_width=True, type="primary"):
                         with st.spinner("🔄 AI 심층분석 중..."):
-                            res, color = generate_section_analysis("forecast", spot_name, 2025, f_25.head().to_string(), pred_stage)
+                            res, color,*_ = generate_section_analysis("forecast", spot_name, 2025, f_25.head().to_string(), pred_stage)
                             st.session_state['analysis_results']['forecast'][key_f] = (res, color)
                             st.rerun()
         else: st.write("예측 데이터 없음")
