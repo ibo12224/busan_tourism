@@ -468,6 +468,7 @@ def style_chart(fig):
     )
     return fig
 
+
 # -----------------------------------------------------------------------------
 # 5. UI 및 세션
 # -----------------------------------------------------------------------------
@@ -989,11 +990,15 @@ else:
                     else:
                         avg_vis, avg_sen, avg_fea = 0, 0, 0
                     
-                    def check_all_pass(row):
-                        mult = 1.0 
-                        return (row['VIS_SCALED'] > avg_vis * mult) and \
-                               (row['SEN_SCALED'] > avg_sen * mult) and \
-                               (row['FEA_SCALED'] > avg_fea * mult)
+                    def check_flexible_pass(row):
+                        # 각 지표의 통과 여부를 리스트로 저장
+                        passes = [
+                            row['VIS_SCALED'] > avg_vis,
+                            row['SEN_SCALED'] > avg_sen,
+                            row['FEA_SCALED'] > avg_fea
+                        ]
+                        # 3개 중 2개 이상 통과하면 True 반환 (전부는 sum(passes) == 3)
+                        return sum(passes) >= 2
 
                     candidates = merged[
                         (merged.index != spot_name) & 
@@ -1001,7 +1006,7 @@ else:
                         (merged['CATEGORY'] != '기타')
                     ]
                     
-                    filtered = candidates[candidates.apply(check_all_pass, axis=1)]
+                    filtered = candidates[candidates.apply(check_flexible_pass, axis=1)]
                     
                 
                     # --- [콘솔 디버깅 및 방어 코드] ---
