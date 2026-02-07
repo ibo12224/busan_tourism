@@ -931,33 +931,7 @@ else:
                         st.rerun()
 
         elif current_sub == "Cross-Category":
-            # --- [디버깅 섹션 시작] ---
-            with st.expander("🛠️ 시스템 디버깅 데이터 (변수 추적)", expanded=True):
-                st.write("### 1. 기본 상태 확인")
-                col_d1, col_d2 = st.columns(2)
-                col_d1.metric("선택된 관광지", spot_name)
-                source_cat = get_spot_category(spot_name)
-                col_d2.metric("판단된 카테고리", source_cat)
-
-                st.write("### 2. 원본 데이터프레임 비어있음 여부")
-                st.json({
-                    "df_vis_scaled": df_vis_scaled.empty,
-                    "df_sen_scaled": df_sen_scaled.empty,
-                    "df_fea_scaled": df_fea_scaled.empty
-                })
-
-                if not df_vis_scaled.empty:
-                    # 데이터 병합 과정 재현 및 출력
-                    test_v = df_vis_scaled[df_vis_scaled['기준_관광지'] == spot_name].drop_duplicates('비교_대상').set_index('비교_대상')['VIS_SCALED']
-                    st.write(f"🔍 '{spot_name}'으로 조회된 매칭 행 수: {len(test_v)}개")
-                    
-                    if len(test_v) == 0:
-                        st.error(f"데이터셋에 '{spot_name}'과 매칭되는 기준_관광지가 없습니다. CSV 이름을 확인하세요.")
-            # --- [디버깅 섹션 끝] ---
-
-
-
-
+            
 
 
             st.markdown(f"<h4 style='text-align:center;'>Cross-Category Analysis (Genre-Breaking)</h4>", unsafe_allow_html=True)
