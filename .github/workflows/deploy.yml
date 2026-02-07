@@ -23,7 +23,7 @@ jobs:
           context: .
           push: true
           # 본인의 [도커허브ID]/[이미지명]으로 수정하세요!
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest
+          tags: ibo12224/busan-tourist-rag:latest
 
   # (선택 사항) 여기에 EC2에 접속해서 자동으로 docker-compose pull을 실행하는 단계를 추가할 수 있습니다.
 
