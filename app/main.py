@@ -97,49 +97,38 @@ st.markdown("""
 # -----------------------------------------------------------------------------
 @st.cache_data
 def load_data_smart(file_path):
-    # 1. 입력값이 None이거나 비어있는지 확인
+    # 1. 입력값 확인
     if not file_path:
+        st.error("❌ 호출된 파일 경로가 비어있습니다.")
         return pd.DataFrame()
 
     # 2. CSV 파일 로드 시도
     if os.path.exists(file_path):
         try:
             return pd.read_csv(file_path, encoding='utf-8-sig')
-        except Exception:
+        except Exception as e:
             try:
                 return pd.read_csv(file_path, encoding='cp949')
-            except Exception as e:
-                # 파일은 있는데 읽기 실패한 경우 로그 출력
-                st.warning(f"⚠️ CSV 읽기 에러: {os.path.basename(file_path)} | {e}")
+            except:
+                st.error(f"❌ CSV 읽기 실패: {file_path}")
+                st.error(f"에러 내용: {e}")
 
-    # 3. CSV가 없거나 로드 실패 시 XLSX 확인
-    # .csv 부분을 .xlsx로 바꿔서 경로 생성
+    # 3. CSV가 없을 경우 XLSX 시도 (replace 시 앞뒤 공백 제거 필수)
     xlsx_path = str(file_path).replace('.csv', '.xlsx').strip()
     
     if os.path.exists(xlsx_path):
         try:
-            import openpyxl # 엔진 확인용
+            # engine='openpyxl'이 설치되어 있어야 합니다.
             return pd.read_excel(xlsx_path, engine='openpyxl')
         except Exception as e:
-            st.warning(f"⚠️ XLSX 읽기 에러: {os.path.basename(xlsx_path)} | {e}")
+            st.error(f"❌ XLSX 읽기 실패: {xlsx_path}")
+            st.error(f"에러 내용: {e}")
 
-    # 4. 최종 실패 시 경로 출력 (디버깅용)
-    # st.error(f"❌ 파일을 찾을 수 없습니다: {file_path}")
-    return pd.DataFrame()
-
-    # 3. CSV가 없거나 실패 시 XLSX 파일 로드 시도
-    # 확장자 교체 및 경로 정제
-    xlsx_path = file_path.replace('.csv', '.xlsx').strip()
+    # 4. 파일이 물리적으로 없는 경우 (이게 뜰 확률이 가장 높음)
+    # 어떤 경로를 찾으려 했는지 사용자에게 보여줍니다.
+    st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
+    # st.sidebar.write(f"시도한 경로: {file_path}") # 필요시 주석 해제하여 전체 경로 확인
     
-    if os.path.exists(xlsx_path):
-        try:
-            # 엑셀 로드를 위해 openpyxl 엔진 사용 권장
-            return pd.read_excel(xlsx_path, engine='openpyxl')
-        except Exception as e:
-            st.warning(f"⚠️ XLSX 로드 실패 ({file_key}): {e}")
-
-    # 4. 모든 시도가 실패할 경우 빈 데이터프레임 반환
-    # st.error(f"📂 파일을 찾을 수 없습니다: {file_path}")
     return pd.DataFrame()
 
 @st.cache_data
