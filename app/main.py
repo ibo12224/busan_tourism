@@ -96,12 +96,9 @@ st.markdown("""
 # 3. [데이터 로드]
 # -----------------------------------------------------------------------------
 @st.cache_data
-def load_data_smart(file_key):
-    # 1. FILE_CONFIG에서 경로 가져오기
-    file_path = FILE_CONFIG.get(file_key)
-    
+def load_data_smart(file_path):
+    # 1. 입력값이 None이거나 비어있는지 확인
     if not file_path:
-        st.error(f"❌ FILE_CONFIG에 '{file_key}' 설정이 없습니다.")
         return pd.DataFrame()
 
     # 2. CSV 파일 로드 시도
@@ -112,7 +109,23 @@ def load_data_smart(file_key):
             try:
                 return pd.read_csv(file_path, encoding='cp949')
             except Exception as e:
-                st.warning(f"⚠️ CSV 로드 실패 ({file_key}): {e}")
+                # 파일은 있는데 읽기 실패한 경우 로그 출력
+                st.warning(f"⚠️ CSV 읽기 에러: {os.path.basename(file_path)} | {e}")
+
+    # 3. CSV가 없거나 로드 실패 시 XLSX 확인
+    # .csv 부분을 .xlsx로 바꿔서 경로 생성
+    xlsx_path = str(file_path).replace('.csv', '.xlsx').strip()
+    
+    if os.path.exists(xlsx_path):
+        try:
+            import openpyxl # 엔진 확인용
+            return pd.read_excel(xlsx_path, engine='openpyxl')
+        except Exception as e:
+            st.warning(f"⚠️ XLSX 읽기 에러: {os.path.basename(xlsx_path)} | {e}")
+
+    # 4. 최종 실패 시 경로 출력 (디버깅용)
+    # st.error(f"❌ 파일을 찾을 수 없습니다: {file_path}")
+    return pd.DataFrame()
 
     # 3. CSV가 없거나 실패 시 XLSX 파일 로드 시도
     # 확장자 교체 및 경로 정제
