@@ -96,16 +96,37 @@ st.markdown("""
 # 3. [데이터 로드]
 # -----------------------------------------------------------------------------
 @st.cache_data
-def load_data_smart(file_path):
+def load_data_smart(file_key):
+    # 1. FILE_CONFIG에서 경로 가져오기
+    file_path = FILE_CONFIG.get(file_key)
+    
+    if not file_path:
+        st.error(f"❌ FILE_CONFIG에 '{file_key}' 설정이 없습니다.")
+        return pd.DataFrame()
+
+    # 2. CSV 파일 로드 시도
     if os.path.exists(file_path):
-        try: return pd.read_csv(file_path, encoding='utf-8-sig')
-        except: 
-            try: return pd.read_csv(file_path, encoding='cp949')
-            except: pass
+        try:
+            return pd.read_csv(file_path, encoding='utf-8-sig')
+        except Exception:
+            try:
+                return pd.read_csv(file_path, encoding='cp949')
+            except Exception as e:
+                st.warning(f"⚠️ CSV 로드 실패 ({file_key}): {e}")
+
+    # 3. CSV가 없거나 실패 시 XLSX 파일 로드 시도
+    # 확장자 교체 및 경로 정제
     xlsx_path = file_path.replace('.csv', '.xlsx').strip()
+    
     if os.path.exists(xlsx_path):
-        try: return pd.read_excel(xlsx_path)
-        except: pass
+        try:
+            # 엑셀 로드를 위해 openpyxl 엔진 사용 권장
+            return pd.read_excel(xlsx_path, engine='openpyxl')
+        except Exception as e:
+            st.warning(f"⚠️ XLSX 로드 실패 ({file_key}): {e}")
+
+    # 4. 모든 시도가 실패할 경우 빈 데이터프레임 반환
+    # st.error(f"📂 파일을 찾을 수 없습니다: {file_path}")
     return pd.DataFrame()
 
 @st.cache_data
