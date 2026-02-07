@@ -26,19 +26,11 @@ jobs:
           tags: ibo12224/busan-tourist-rag:latest
 
   # (선택 사항) 여기에 EC2에 접속해서 자동으로 docker-compose pull을 실행하는 단계를 추가할 수 있습니다.
-
-  deploy:
+deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ubuntu
-          key: ${{ secrets.AWS_SSH_KEY }}
-          script: |
-            - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
@@ -55,7 +47,7 @@ jobs:
             # 3. 안 쓰는 이미지 정리 (용량 확보)
             sudo docker image prune -f
 
-            # 4. 네트워크가 없으면 생성 (이 부분이 추가되었습니다!)
+            # 4. 네트워크가 없으면 생성
             sudo docker network inspect busan-net >/dev/null 2>&1 || sudo docker network create busan-net
 
             # 5. 컨테이너 새로 실행
