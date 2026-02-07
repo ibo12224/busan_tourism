@@ -529,7 +529,7 @@ else:
     with st.expander(f"ℹ️ ABOUT {spot_name}", expanded=True):
         ic1, ic2 = st.columns([1, 2])
         with ic1:
-            img_path = os.path.join("images", f"{spot_name}.jpg")
+            img_path = os.path.join(BASE_DIR,"images", f"{spot_name}.jpg")
             if os.path.exists(img_path): 
                 st.image(img_path, use_container_width=True) 
             else: st.markdown("<div style='background:#F4F4F5; height:200px; display:flex; justify-content:center; align-items:center; color:#999;'>NO IMAGE</div>", unsafe_allow_html=True)
@@ -724,7 +724,7 @@ else:
                         </div>
                         """, unsafe_allow_html=True)
                         
-                        img_path = os.path.join("images", f"{top1['name']}.jpg")
+                        img_path = os.path.join(BASE_DIR,"images", f"{top1['name']}.jpg")
                         if os.path.exists(img_path): st.image(img_path, use_container_width=True)
                         else: st.markdown("<div style='background:#F4F4F5; height:200px; border-radius:8px;'></div>", unsafe_allow_html=True)
 
@@ -773,7 +773,7 @@ else:
                         
                         with r2_cols[idx]:
                             st.markdown(f"<div style='font-weight:700; margin-bottom:5px; font-size:1.8rem;'>{medal} {label} (Rank {cand['rank']})</div>", unsafe_allow_html=True)
-                            i_path = os.path.join("images", f"{cand['name']}.jpg")
+                            i_path = os.path.join(BASE_DIR,"images", f"{cand['name']}.jpg")
                             if os.path.exists(i_path): st.image(i_path, use_container_width=True)
                             else: st.markdown("<div style='background:#EEE; height:150px; display:flex; align-items:center; justify-content:center; color:#999;'>NO IMAGE</div>", unsafe_allow_html=True)
                             st.markdown(f"<div style='font-weight:800; font-size:1.1rem;'>{cand['name']}</div>", unsafe_allow_html=True)
