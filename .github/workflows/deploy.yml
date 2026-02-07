@@ -40,7 +40,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest
             sudo docker stop busan-tourism || true
-            sudo docker rm busan-tourism || true
+            sudo docker rm -f busan-tourism || true
             sudo docker run -d --name busan-tourism \
               --network busan-net \
               -p 8501:8501 \
