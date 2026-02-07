@@ -52,7 +52,7 @@ jobs:
             # 5. 컨테이너 실행 (바인딩 주소 명시)
             sudo docker run -d --name busan-tourism \
               --network busan-net \
-              -p 8501:8501 \
+              -p 80:8501 \
               -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
               ${{ secrets.DOCKERHUB_USERNAME }}/busan-tourist-rag:latest \
               streamlit run main.py --server.port 8501 --server.address 0.0.0.0

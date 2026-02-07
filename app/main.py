@@ -99,45 +99,17 @@ st.markdown("""
 # -----------------------------------------------------------------------------
 @st.cache_data
 def load_data_smart(file_path):
-    # 1. 입력값 및 파일 존재 확인
-    if not os.path.exists(file_path):
-        print(f"🚨 [FILE NOT FOUND] 경로를 찾을 수 없습니다: {file_path}")
-    
-    # 2. 파일이 존재하는지 먼저 확인
-    if not os.path.exists(file_path):
-        # 만약 .csv로 요청했는데 파일이 없다면 .xlsx로 바꿔서 한 번 더 확인
-        if file_path.endswith('.csv'):
-            alt_path = file_path.replace('.csv', '.xlsx').strip()
-            if os.path.exists(alt_path):
-                file_path = alt_path
-            else:
-                st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
-                return pd.DataFrame()
-        else:
-            st.sidebar.warning(f"📂 파일을 찾을 수 없음: {os.path.basename(file_path)}")
-            return pd.DataFrame()
+    if os.path.exists(file_path):
+        try: return pd.read_csv(file_path, encoding='utf-8-sig')
+        except: 
+            try: return pd.read_csv(file_path, encoding='cp949')
+            except: pass
+    xlsx_path = file_path.replace('.csv', '.xlsx').strip()
+    if os.path.exists(xlsx_path):
+        try: return pd.read_excel(xlsx_path)
+        except: pass
+    return pd.DataFrame()
 
-    # 3. [개선] 확장자에 따른 로드 로직 분리
-    # 엑셀 파일인 경우
-    if file_path.lower().endswith(('.xlsx', '.xls')):
-        try:
-            return pd.read_excel(file_path, engine='openpyxl')
-        except Exception as e:
-            st.error(f"❌ Excel 읽기 실패: {os.path.basename(file_path)} | {e}")
-            return pd.DataFrame()
-            
-    # CSV 파일인 경우
-    else:
-        try:
-            # 시도 1: utf-8-sig (한글 깨짐 방지용)
-            return pd.read_csv(file_path, encoding='utf-8-sig')
-        except Exception:
-            try:
-                # 시도 2: cp949 (Windows 저장 파일용)
-                return pd.read_csv(file_path, encoding='cp949')
-            except Exception as e:
-                st.error(f"❌ CSV 읽기 실패: {os.path.basename(file_path)} | {e}")
-                return pd.DataFrame()
 
 @st.cache_data
 def get_category_map():

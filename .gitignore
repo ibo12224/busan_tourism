@@ -6,3 +6,5 @@
 .env
 임용수/*/*.csv
 권이현/.streamlit/
+권이현/images/
+권이현/*.csv
