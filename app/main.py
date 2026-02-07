@@ -509,7 +509,7 @@ if 'analysis_results' not in st.session_state:
     st.session_state['analysis_results'] = {'trend': {}, 'hourly': {}, 'forecast': {}, 'sim_strat': {}, 'sim_img': {}, 'spot_info': {}, 'visual_rank1': {}, 'weighted': {}}
 
 with st.sidebar:
-    st.markdown('<h3 style="color:white; margin-bottom:30px; font-weight:900; letter-spacing:1px; padding-left:10px;">SLA PROJECT</h3>', unsafe_allow_html=True)
+    st.markdown('<h3 style="color:white; margin-bottom:30px; font-weight:850; letter-spacing:1px; padding-left:10px;">SLA PROJECT</h3>', unsafe_allow_html=True)
     if not main_df.empty:
         gu_list = sorted(main_df['행정구'].unique())
         for gu in gu_list:
