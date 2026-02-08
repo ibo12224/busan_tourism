@@ -929,11 +929,8 @@ else:
                         res = generate_weighted_insight(spot_name, cand_info, [w_vis, w_sen, w_fea])
                         st.session_state['analysis_results']['weighted'][spot_name] = res
                         st.rerun()
-
-        elif current_sub == "Cross-Category":
             
-
-
+        elif current_sub == "Cross-Category":
             st.markdown(f"<h4 style='text-align:center;'>Cross-Category Analysis (Genre-Breaking)</h4>", unsafe_allow_html=True)
             st.markdown("<div class='center-caption'>동일 카테고리의 평균 유사도보다 높은 점수를 가진(3가지 기준 중 3개 모두 충족), '다른 카테고리'의 관광지 리스트입니다.</div>", unsafe_allow_html=True)
             
@@ -964,15 +961,11 @@ else:
                     else:
                         avg_vis, avg_sen, avg_fea = 0, 0, 0
                     
-                    def check_flexible_pass(row):
-                        # 각 지표의 통과 여부를 리스트로 저장
-                        passes = [
-                            row['VIS_SCALED'] > avg_vis,
-                            row['SEN_SCALED'] > avg_sen,
-                            row['FEA_SCALED'] > avg_fea
-                        ]
-                        # 3개 중 2개 이상 통과하면 True 반환 (전부는 sum(passes) == 3)
-                        return sum(passes) >= 2
+                    def check_all_pass(row):
+                        mult = 1.0 
+                        return (row['VIS_SCALED'] > avg_vis * mult) and \
+                            (row['SEN_SCALED'] > avg_sen * mult) and \
+                            (row['FEA_SCALED'] > avg_fea * mult)
 
                     candidates = merged[
                         (merged.index != spot_name) & 
@@ -980,35 +973,9 @@ else:
                         (merged['CATEGORY'] != '기타')
                     ]
                     
-                    filtered = candidates[candidates.apply(check_flexible_pass, axis=1)]
+                    filtered = candidates[candidates.apply(check_all_pass, axis=1)]
                     
-                
-                    # --- [콘솔 디버깅 및 방어 코드] ---
-                    if filtered is None or filtered.empty:
-                        # 1. 필터링 결과가 없을 때 콘솔 출력
-                        print("\n" + "="*50)
-                        print("🚨 [DEBUG] 필터링된 데이터가 없습니다. (Empty DataFrame)")
-                        print(f"📍 대상 카테고리: {source_cat}")
-                        print("="*50 + "\n")
-                        
-                        st.warning("⚠️ 조건에 맞는 '다른 카테고리' 관광지가 없습니다.")
-                        st.session_state['cross_result'] = pd.DataFrame()
-                    else:
-                        if 'FINAL_SCORE' not in filtered.columns:
-                            # 2. 컬럼이 없을 때 콘솔 출력
-                            print("\n" + "!"*50)
-                            print(f"🚨 [ERROR] 'FINAL_SCORE' 컬럼이 존재하지 않습니다!")
-                            print(f"📍 현재 컬럼 목록: {filtered.columns.tolist()}")
-                            print("!"*50 + "\n")
-                            
-                            st.error("🚨 데이터 정렬 중 오류가 발생했습니다. (컬럼 미존재)")
-                            st.session_state['cross_result'] = pd.DataFrame()
-                        else:
-                            # 3. 정상 작동 시 콘솔 출력 (선택 사항)
-                            print(f"✅ [SUCCESS] {len(filtered)}개의 대체지 발견. 정렬을 시작합니다.")
-                            st.session_state['cross_result'] = filtered.sort_values(by='FINAL_SCORE', ascending=False)
-                    # --- [수정 구간 끝] ---
-
+                    st.session_state['cross_result'] = filtered.sort_values(by='FINAL_SCORE', ascending=False)
                     st.session_state['source_cat'] = source_cat
                     st.session_state['debug_avg'] = (avg_vis, avg_sen, avg_fea)
                 else: st.warning("데이터 부족")
