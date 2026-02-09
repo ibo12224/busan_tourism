@@ -60,6 +60,23 @@
     border: 1px solid #FFFFFF !important;
 }
 
+[data-testid="stSidebarCollapseButton"] svg {
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+/* 사이드바가 닫혀 있을 때 화면 왼쪽에 나타나는 열기 버튼 아이콘 */
+[data-testid="collapsedControl"] svg {
+    fill: #000000 !important; /* 메인 화면이 흰색이므로 열기 버튼은 검은색으로 */
+}
+
+/* 버튼 자체의 배경색 및 호버 효과 (선택사항) */
+[data-testid="stSidebarCollapseButton"]:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50%;
+}
+
+
 /* 3. 버튼 (Primary / Secondary) 스타일 */
 div.stButton > button[kind="primary"] {
     background-color: #0F172A !important; 
