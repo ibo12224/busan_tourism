@@ -650,6 +650,7 @@ else:
                             st.session_state['analysis_results']['forecast'][key_f] = (res, color)
                             st.rerun()
         else: st.write("예측 데이터 없음")
+        st.markdown("<div class='center-caption'>안내 : 혼잡도 계산은 상당부분 추정에 근거하고 있어 현실데이터와 차이가 있을 수 있습니다. 보조지표로만 사용할 것을 권장하며 특히 23년과 24년의 혼잡도를 직접 비교하는 것은 권장하지 않습니다 </div>", unsafe_allow_html=True)
 # TAB 2: 유사도 분석
     with tab2:
         st.markdown(" ") 
