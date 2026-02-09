@@ -49,16 +49,121 @@ st.set_page_config(layout="wide", page_title="SLA PROJECT", page_icon="⚫")
 # -----------------------------------------------------------------------------
 # 2. [디자인] CSS 스타일링
 # -----------------------------------------------------------------------------
-# CSS 로드 함수 정의
-def local_css(file_name):
-    try:
-        with open(file_name, encoding="utf-8") as f:
-            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-    except FileNotFoundError:
-        st.error(f"{file_name} 파일을 찾을 수 없습니다.")
+st.markdown("""
 
-# 스타일 적용
-local_css("style.css")
+    <style>
+
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+    .stApp { font-family: 'Pretendard', sans-serif !important; background-color: #FFFFFF; }
+
+    [data-testid="stSidebar"] { background-color: #000000 !important; border-right: 1px solid #222 !important; }
+
+    [data-testid="stSidebar"] [data-testid="stExpander"] summary { color: #FFFFFF !important; font-weight: 700 !important; }
+
+    [data-testid="stSidebar"] button { color: #FFFFFF !important; text-align: left !important; }
+
+   
+
+    div.stButton > button[kind="primary"] {
+
+        background-color: #0F172A !important; color: #FFFFFF !important;
+
+        border-radius: 8px; font-weight: 800 !important; border: 1px solid #0F172A !important;
+
+    }
+
+    div.stButton > button[kind="secondary"] {
+
+        background-color: #F8FAFC !important; color: #333 !important;
+
+        border: 1px solid #E2E8F0 !important; border-radius: 6px;
+
+    }
+
+    .stTabs [data-baseweb="tab-list"] { gap: 0px; border-bottom: 2px solid #000000; margin-bottom: 30px; }
+
+    .stTabs [data-baseweb="tab"] { height: 60px; flex: 1; background: transparent; border: none; color: #9CA3AF; font-weight: 700; font-size: 1.2rem; }
+
+    .stTabs [aria-selected="true"] { color: #000000 !important; background: #FAFAFA !important; border-bottom: 5px solid #000000 !important; }
+
+   
+
+    .sim-card { background: #FFFFFF; border: 1px solid #E5E5E5; border-radius: 12px; padding: 24px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); }
+
+    .rank-card-mini { background: #F9F9F9; border: 1px solid #EEE; border-radius: 8px; padding: 15px; min-width: 150px; text-align: center; }
+
+    .sim-rank-badge { background: #000; color: #FFF; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-right: 8px; }
+
+    .congestion-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+
+    .cong-good { background: #E0F2FE; color: #0284C7; border: 1px solid #0284C7; }
+
+    .cong-norm { background: #DCFCE7; color: #16A34A; border: 1px solid #16A34A; }
+
+    .cong-bad { background: #FEE2E2; color: #DC2626; border: 1px solid #DC2626; }
+
+    .ai-insight-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 6px solid #0F172A; padding: 20px; margin: 20px 0 30px 0; color: #333; line-height: 1.7; }
+
+    .ai-header { font-weight: 800; font-size: 1rem; margin-bottom: 10px; color: #0F172A !important; display: flex; align-items: center; gap: 8px; }
+
+    .ai-box-full-height { background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 25px; height: 100%; min-height: 350px; display: flex; flex-direction: column; justify-content: center; }
+
+    .meta-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 3px 8px; margin: 0 4px 4px 0; border-radius: 4px; }
+
+    .tag-common { background: #F3F4F6; color: #4B5563; border: 1px solid #E5E7EB; }
+
+    .tag-unique-source { background: #FFFFFF; color: #000; border: 1px solid #000; }
+
+    .tag-unique-target { background: #000; color: #FFF; border: 1px solid #000; }
+
+    .keyword-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #E2E8F0; }
+
+    .keyword-col-header { font-size: 0.7rem; font-weight: 800; color: #64748B; margin-bottom: 8px; text-transform: uppercase; }
+
+    .keyword-box { background: #FAFAFA; border: 2px solid #E5E5E5; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
+
+    .keyword-header { font-size: 1rem; font-weight: 900; color: #000; margin-bottom: 15px; border-left: 5px solid #000; padding-left: 12px; }
+
+    .block-container { padding-top: 2rem; }
+
+    .notice-box {
+
+                background-color: #e1f5fe;       /* 연한 파란색 배경 */
+
+                border-left: 5px solid #0288d1;  /* 왼쪽 굵은 파란색 선 */
+
+                padding: 15px;                   /* 내부 여백 */
+
+                border-radius: 5px;              /* 모서리 곡선 */
+
+                color: #01579b;                  /* 글자 색상 */
+
+                font-size: 14px;                 /* 글자 크기 */
+
+                line-height: 1.6;                /* 줄 간격 */
+
+                margin: 10px 0px;                /* 위아래 간격 */
+
+            }
+
+            .notice-title {
+
+                font-weight: bold;
+
+                margin-bottom: 5px;
+
+                display: block;
+
+            }
+
+    /* 캡션 가운데 정렬 클래스 */
+
+    .center-caption { text-align: center; color: #666; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px; line-height: 1.4; }
+
+    </style>
+
+    """, unsafe_allow_html=True)
 # -----------------------------------------------------------------------------
 # 3. [데이터 로드]
 # -----------------------------------------------------------------------------

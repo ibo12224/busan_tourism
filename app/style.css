@@ -1,0 +1,213 @@
+/* style.css */
+/* 1. 기본 폰트 및 앱 배경 설정 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+.stApp { 
+    font-family: 'Pretendard', sans-serif !important; 
+    background-color: #FFFFFF; 
+}
+
+/* 2. 사이드바 (Sidebar) 스타일 */
+[data-testid="stSidebar"] { 
+    background-color: #000000 !important; 
+    border-right: 1px solid #222 !important; 
+}
+/* 사이드바 익스팬더 제목 */
+[data-testid="stSidebar"] [data-testid="stExpander"] summary { 
+    color: #FFFFFF !important; 
+    font-weight: 700 !important; 
+}
+/* 사이드바 내 버튼 기본 설정 */
+[data-testid="stSidebar"] button { 
+    color: #FFFFFF !important; 
+    text-align: left !important; 
+    width: 100%;
+    border: none !important;
+    transition: background 0.3s ease;
+}
+/* 사이드바 버튼 마우스 호버 효과 */
+[data-testid="stSidebar"] button:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 3. 버튼 (Primary / Secondary) 스타일 */
+div.stButton > button[kind="primary"] {
+    background-color: #0F172A !important; 
+    color: #FFFFFF !important;
+    border-radius: 8px; 
+    font-weight: 800 !important; 
+    border: 1px solid #0F172A !important;
+    transition: transform 0.1s ease;
+}
+div.stButton > button[kind="secondary"] {
+    background-color: #F8FAFC !important; 
+    color: #333 !important;
+    border: 1px solid #E2E8F0 !important; 
+    border-radius: 6px;
+    transition: transform 0.1s ease;
+}
+/* 버튼 클릭 시 눌리는 효과 추가 */
+div.stButton > button:active {
+    transform: scale(0.98);
+}
+
+/* 4. 탭 (Tabs) 커스텀 스타일 */
+.stTabs [data-baseweb="tab-list"] { 
+    gap: 0px; 
+    border-bottom: 2px solid #000000; 
+    margin-bottom: 30px; 
+}
+.stTabs [data-baseweb="tab"] { 
+    height: 60px; 
+    flex: 1; 
+    background: transparent; 
+    border: none; 
+    color: #9CA3AF; 
+    font-weight: 700; 
+    font-size: 1.2rem; 
+}
+.stTabs [aria-selected="true"] { 
+    color: #000000 !important; 
+    background: #FAFAFA !important; 
+    border-bottom: 5px solid #000000 !important; 
+}
+
+/* 5. 카드 및 레이아웃 컨테이너 */
+.sim-card { 
+    background: #FFFFFF; 
+    border: 1px solid #E5E5E5; 
+    border-radius: 12px; 
+    padding: 24px; 
+    margin-bottom: 15px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03); 
+}
+.rank-card-mini { 
+    background: #F9F9F9; 
+    border: 1px solid #EEE; 
+    border-radius: 8px; 
+    padding: 15px; 
+    min-width: 150px; 
+    text-align: center; 
+}
+.ai-box-full-height { 
+    background-color: #F8FAFC; 
+    border: 1px solid #E2E8F0; 
+    border-radius: 10px; 
+    padding: 25px; 
+    height: 100%; 
+    min-height: 350px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+.block-container { padding-top: 2rem; }
+
+/* 6. 배지 및 상태 태그 */
+.sim-rank-badge { 
+    background: #000; 
+    color: #FFF; 
+    padding: 4px 10px; 
+    border-radius: 4px; 
+    font-size: 0.8rem; 
+    font-weight: 700; 
+    margin-right: 8px; 
+}
+.congestion-badge { 
+    font-size: 0.75rem; 
+    font-weight: 700; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    display: inline-block; 
+}
+.cong-good { background: #E0F2FE; color: #0284C7; border: 1px solid #0284C7; } 
+.cong-norm { background: #DCFCE7; color: #16A34A; border: 1px solid #16A34A; } 
+.cong-bad { background: #FEE2E2; color: #DC2626; border: 1px solid #DC2626; } 
+
+/* 7. 메타 태그 스타일 */
+.meta-tag { 
+    display: inline-block; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    padding: 3px 8px; 
+    margin: 0 4px 4px 0; 
+    border-radius: 4px; 
+}
+.tag-common { background: #F3F4F6; color: #4B5563; border: 1px solid #E5E7EB; } 
+.tag-unique-source { background: #FFFFFF; color: #000; border: 1px solid #000; } 
+.tag-unique-target { background: #000; color: #FFF; border: 1px solid #000; } 
+
+/* 8. 키워드 그리드 및 박스 */
+.keyword-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 15px; 
+    margin-top: 15px; 
+    padding-top: 15px; 
+    border-top: 1px dashed #E2E8F0; 
+}
+.keyword-col-header { 
+    font-size: 0.7rem; 
+    font-weight: 800; 
+    color: #64748B; 
+    margin-bottom: 8px; 
+    text-transform: uppercase; 
+}
+.keyword-box { 
+    background: #FAFAFA; 
+    border: 2px solid #E5E5E5; 
+    border-radius: 12px; 
+    padding: 25px; 
+    margin-bottom: 30px; 
+}
+.keyword-header { 
+    font-size: 1rem; 
+    font-weight: 900; 
+    color: #000; 
+    margin-bottom: 15px; 
+    border-left: 5px solid #000; 
+    padding-left: 12px; 
+}
+
+/* 9. AI 인사이트 및 공지사항(파란 박스) */
+.ai-insight-box { 
+    background: #F8FAFC; 
+    border: 1px solid #E2E8F0; 
+    border-left: 6px solid #0F172A; 
+    padding: 20px; 
+    margin: 20px 0 30px 0; 
+    color: #333; 
+    line-height: 1.7; 
+}
+.ai-header { 
+    font-weight: 800; 
+    font-size: 1rem; 
+    margin-bottom: 10px; 
+    color: #0F172A !important; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+.notice-box {
+    background-color: #e1f5fe;
+    border-left: 5px solid #0288d1;
+    padding: 15px;
+    border-radius: 5px;
+    color: #01579b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 10px 0px;
+}
+.notice-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* 10. 유틸리티 클래스 */
+.center-caption { 
+    text-align: center; 
+    color: #666; 
+    font-size: 0.9rem; 
+    margin-top: -10px; 
+    margin-bottom: 20px; 
+    line-height: 1.4; 
+}
