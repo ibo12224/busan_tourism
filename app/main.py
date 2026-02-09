@@ -30,7 +30,7 @@ FILE_CONFIG = {
     "KEYWORD_ADJ": os.path.join(BASE_DIR, "data", "부산_관광지별_형용사_추출결과.csv"),
     "CATEGORY_INFO": os.path.join(BASE_DIR, "data", "부산_관광지명.xlsx")
 }
-
+ 
 # 이름 매핑
 NAME_MAPPING = {
     '광안리SUPZONE': '광안대교sup',
