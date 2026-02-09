@@ -88,7 +88,21 @@ st.markdown("""
     .keyword-box { background: #FAFAFA; border: 2px solid #E5E5E5; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
     .keyword-header { font-size: 1rem; font-weight: 900; color: #000; margin-bottom: 15px; border-left: 5px solid #000; padding-left: 12px; }
     .block-container { padding-top: 2rem; }
-    
+    .notice-box {
+                background-color: #e1f5fe;       /* 연한 파란색 배경 */
+                border-left: 5px solid #0288d1;  /* 왼쪽 굵은 파란색 선 */
+                padding: 15px;                   /* 내부 여백 */
+                border-radius: 5px;              /* 모서리 곡선 */
+                color: #01579b;                  /* 글자 색상 */
+                font-size: 14px;                 /* 글자 크기 */
+                line-height: 1.6;                /* 줄 간격 */
+                margin: 10px 0px;                /* 위아래 간격 */
+            }
+            .notice-title {
+                font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+            }
     /* 캡션 가운데 정렬 클래스 */
     .center-caption { text-align: center; color: #666; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px; line-height: 1.4; }
     </style>
@@ -650,7 +664,18 @@ else:
                             st.session_state['analysis_results']['forecast'][key_f] = (res, color)
                             st.rerun()
         else: st.write("예측 데이터 없음")
-        st.markdown("<div class='center-caption'>안내 : 혼잡도 계산은 상당부분 추정에 근거하고 있어 현실데이터와 차이가 있을 수 있습니다. 보조지표로만 사용할 것을 권장하며 특히 23년과 24년의 혼잡도를 직접 비교하는 것은 권장하지 않습니다 </div>", unsafe_allow_html=True)
+
+        # 2. 마크다운 적용
+        st.markdown(
+            """
+            <div class='notice-box'>
+                <span class='notice-title'>ℹ️ 안내</span>
+                혼잡도 계산은 상당부분 추정에 근거하고 있어 현실데이터와 차이가 있을 수 있습니다. <br>
+                보조지표로만 사용할 것을 권장하며 특히 <b>23년과 24년의 혼잡도를 직접 비교하는 것</b>은 권장하지 않습니다.
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
 # TAB 2: 유사도 분석
     with tab2:
         st.markdown(" ") 
